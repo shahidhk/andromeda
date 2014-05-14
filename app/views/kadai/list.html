@@ -1,27 +1,17 @@
-<div ng-controller="IndexCtrl">
-  <ul class="list">
-    <li class="item item-icon-right" ng-click="open(kadai.id)" ng-repeat="kadai in kadais">
-      Kadai: {{ kadai.name }}
-      <i class="icon ion-ios7-arrow-right"></i>
-    </li>
-  </ul>
-</div>
-
 <div ng-app="kadaiApp">
-  <div ng-controller="IndexCtrl">
-    <div class="topcoat-list__container">
-      <ul class="topcoat-list recipe-list">
-        <li class="topcoat-list__item" hm-tap="open(kadai.pk)" ng-repeat="kadai in kadais">
-          <div class="recipe-name__container">
-            <h2>{{ kadai.fields.name }}</h2>
-          </div>
-          <div class="recipe-image__container">
-            <img src="http://192.168.2.5:1234/media/{{kadai.fields.image}}">
-          </div>
-        </li>
-      </ul>
+  <div ng-controller="ListCtrl">
+    <div class="list">
 
-    </div>
+        <div ng-repeat="kadai in kadais" 
+           ng-click="open(kadai.pk)"
+           class="item item-thumbnail-left">
+
+          <img ng-src="{{ kadai.fields.image }}">
+          <h2>{{ kadai.fields.name }}</h2>
+          <p>{{ kadai.fields.description }}</p>
+        </div>
+
+      </div>
 
   </div>
 

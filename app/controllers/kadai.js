@@ -3,7 +3,7 @@ var kadaiApp = angular.module('kadaiApp', ['KadaiModel', 'ngTouch']);
 
 // Index: http://localhost/views/kadai/index.html
 
-kadaiApp.controller('IndexCtrl', function ($scope, KadaiRestangular) {
+kadaiApp.controller('ListCtrl', function ($scope, KadaiRestangular) {
 
   // Helper function for opening new webviews
   $scope.open = function(id) {
