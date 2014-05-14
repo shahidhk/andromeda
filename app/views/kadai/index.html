@@ -1,0 +1,18 @@
+<div ng-app="kadaiApp">
+  <div ng-controller="IndexCtrl">
+    <div class="list">
+
+        <div ng-repeat="kadai in kadais" 
+           ng-click="open(kadai.pk)"
+           class="item item-thumbnail-left">
+
+          <img ng-src="{{ kadai.fields.image }}">
+          <h2>{{ kadai.fields.name }}</h2>
+          <p>{{ kadai.fields.description }}</p>
+        </div>
+
+      </div>
+
+  </div>
+
+</div>

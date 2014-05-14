@@ -1,0 +1,22 @@
+[
+  {
+    "id": 1,
+    "name": "First kadai",
+    "description": "This is awesome."
+  },
+  {
+    "id": 2,
+    "name": "Second kadai",
+    "description": "This is also okay."
+  },
+  {
+    "id": 3,
+    "name": "Third kadai",
+    "description": "This is awesome."
+  },
+  {
+    "id": 4,
+    "name": "Fourth kadai",
+    "description": "This is also okay."
+  }
+]
