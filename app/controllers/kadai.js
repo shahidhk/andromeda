@@ -2,6 +2,7 @@ var kadaiApp = angular.module('kadaiApp', ['KadaiModel', 'ngTouch']);
 
 
 kadaiApp.controller('IndexCtrl', function ($scope, KadaiRestangular) {
+  steroids.view.navigationBar.show("Find a Kadai !");
 
   // Helper function for opening new webviews
   $scope.open = function(view) {
@@ -63,5 +64,35 @@ kadaiApp.controller('ShowCtrl', function ($scope, $filter, KadaiRestangular) {
 });
 
 kadaiApp.controller('UploadCtrl', function ($scope, KadaiRestangular) {
-  
+    $scope.uploadKadai = function(){
+      var newKadai = {
+        name: $scope.name,
+        description: $scope.description
+      };
+      KadaiRestangular.all('kadai').post(newKadai).then(function(result){
+        steroids.navigationBar.show('New Kadai Uploaded');
+        webView = new steroids.views.WebView("/views/kadai/show.html?id="+result.pk);
+        steroids.layers.push(webView);
+      }, function(result){
+        console.log(JSON.stringify(result));
+        alert(JSON.stringify(result))
+      });
+    };
 });
+
+
+// kadaiApp.controller('NewKadaiCtrl', [ '$scope', function ($scope, KadaiRestangular) {
+//   // steroids.view.navigationBar.show("Upload a new Kadai !");
+
+//   // Helper function for opening new webviews
+//   $scope.uploadKadai = function() {
+//     var newKadai = {
+//       name: $scope.name,
+//       description: $scope.description
+//     };
+//     KadaiRestangular.all('kadai').post(newKadai);
+//     alert('done');
+//   };
+
+
+// }]);
