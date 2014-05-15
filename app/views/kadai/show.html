@@ -1,14 +1,33 @@
-<div ng-app="kadaiApp">
-
-  <div ng-controller="ShowCtrl">
-    <div class="">
-      <img ng-src="{{ kadai.fields.image }}">
-      <h2>{{ kadai.fields.name }}</h2>
-      <p>{{ kadai.fields.description}}</p>
-
+    <div ng-controller="ShowCtrl">
+        <div class="list card">
+            <div class="item item-avatar">
+                <img src="{{ kadai.fields.image }}">
+                <h2>{{ kadai.fields.name }}</h2>
+                <p>November 05, 1955</p>
+            </div>
+        <div class="item item-body">
+            <img class="full-image" src="delorean.jpg">
+            <p>
+                {{ kadai.fields.description}}
+            </p>
+            <p>
+                <a href="#" class="subdued">1 Like</a>
+                <a href="#" class="subdued">5 Comments</a>
+            </p>
+        </div>
+        <div class="item tabs tabs-secondary tabs-icon-left">
+            <a class="tab-item" href="#">
+                <i class="icon ion-thumbsup"></i>
+                Like
+            </a>
+            <a class="tab-item" href="#">
+                <i class="icon ion-chatbox"></i>
+                Comment
+            </a>
+            <a class="tab-item" href="#">
+                <i class="icon ion-share"></i>
+                Share
+            </a>
+        </div>
     </div>
 
-
-  </div>
-
-</div>

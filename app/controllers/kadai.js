@@ -1,6 +1,18 @@
 var kadaiApp = angular.module('kadaiApp', ['KadaiModel', 'ngTouch']);
 
 
+kadaiApp.controller('IndexCtrl', function ($scope, KadaiRestangular) {
+
+  // Helper function for opening new webviews
+  $scope.open = function(view) {
+    webView = new steroids.views.WebView("/views/kadai/"+view+".html");
+    steroids.layers.push(webView);
+    steroids.view.setBackgroundColor("#FFFFFF");
+  };
+
+});
+
+
 // Index: http://localhost/views/kadai/index.html
 
 kadaiApp.controller('ListCtrl', function ($scope, KadaiRestangular) {
@@ -48,4 +60,8 @@ kadaiApp.controller('ShowCtrl', function ($scope, $filter, KadaiRestangular) {
   // Native navigation
 
 
+});
+
+kadaiApp.controller('UploadCtrl', function ($scope, KadaiRestangular) {
+  
 });

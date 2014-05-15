@@ -1,18 +1,39 @@
-<div ng-app="kadaiApp">
   <div ng-controller="IndexCtrl">
-    <div class="list">
 
-        <div ng-repeat="kadai in kadais" 
-           ng-click="open(kadai.pk)"
-           class="item item-thumbnail-left">
 
-          <img ng-src="{{ kadai.fields.image }}">
-          <h2>{{ kadai.fields.name }}</h2>
-          <p>{{ kadai.fields.description }}</p>
-        </div>
+    <div class="bar bar-header item-input-inset">
+  <label class="item-input-wrapper">
+    <i class="icon ion-ios7-search placeholder-icon"></i>
+    <input type="search" placeholder="Search a Kadai">
+  </label>
+  <button class="button button-clear">
+    Cancel
+  </button>
+</div>
 
-      </div>
+    <div class="list card">
+
+  <a href="#" class="item item-icon-left" ng-click="open('upload')">
+    <i class="icon ion-home"></i>
+    Upload a Kadai
+  </a>
+
+  <a href="#" class="item item-icon-left" ng-click="open('list')">
+    <i class="icon ion-ios7-telephone"></i>
+    Explore
+  </a>
+
+  <a href="#" class="item item-icon-left" ng-click="open('share')">
+    <i class="icon ion-wifi"></i>
+    Share
+  </a>
+
+  <a href="#" class="item item-icon-left" ng-click="open('logout')">
+    <i class="icon ion-card"></i>
+    Logout
+  </a>
+
+</div>
 
   </div>
 
-</div>
