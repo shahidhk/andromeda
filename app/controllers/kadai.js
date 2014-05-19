@@ -64,20 +64,7 @@ kadaiApp.controller('ShowCtrl', function ($scope, $filter, KadaiRestangular) {
 });
 
 kadaiApp.controller('UploadCtrl', function ($scope, KadaiRestangular) {
-    $scope.uploadKadai = function(){
-      var newKadai = {
-        name: $scope.name,
-        description: $scope.description
-      };
-      KadaiRestangular.all('kadai').post(newKadai).then(function(result){
-        steroids.navigationBar.show('New Kadai Uploaded');
-        webView = new steroids.views.WebView("/views/kadai/show.html?id="+result.pk);
-        steroids.layers.push(webView);
-      }, function(result){
-        console.log(JSON.stringify(result));
-        alert(JSON.stringify(result))
-      });
-    };
+  
 });
 
 
@@ -96,3 +83,8 @@ kadaiApp.controller('UploadCtrl', function ($scope, KadaiRestangular) {
 
 
 // }]);
+
+kadaiApp.controller('MapCtrl', function ($scope, KadaiRestangular) {
+    steroids.view.navigationBar.show("Google Maps Demo");
+    
+});

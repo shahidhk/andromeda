@@ -1,4 +1,4 @@
-<div ng-controller="UploadCtrl">
+<div>
 <div class="list">
   <label class="item item-input item-stacked-label">
     <span class="input-label">Kadai Name</span>
@@ -8,9 +8,18 @@
     <span class="input-label">Describe abot the Kadai</span>
     <input type="text" ng-model="description" name ="description" placeholder="A nice midnight tea spot">
   </label>
-  <button class="button button-block button-balanced" ng-click="uploadKadai();">Upload</button>
+  <label class="item item-input item-stacked-label">
+    <span class="input-label">Image</span>
+    <input type="file" ng-file-select="onFileSelect($files)" ng-model="image" name ="image">
+  </label>
+  <button class="button button-block button-balanced" ng-click="sendReq()">Upload</button>
 </div>
 </div>
+
+<form method='post' action='http://192.168.2.6:1234/api/kadai/' enctype='multipart/form-data'><tr><th><label for="id_name">Name:</label></th><td><input id="id_name" maxlength="100" name="name" type="text" /></td></tr>
+<tr><th><label for="id_description">Description:</label></th><td><textarea cols="40" id="id_description" name="description" rows="10">
+</textarea></td></tr>
+<tr><th><label for="id_image">Image:</label></th><td><input id="id_image" name="image" type="file" /></td></tr><input type='submit'></form>
 
     <script type="text/javascript" charset="utf-8">
 
@@ -108,26 +117,3 @@
     <button class="button button-block" onclick="getPhoto(pictureSource.SAVEDPHOTOALBUM);">From Photo Album</button>
     <img style="display:none;width:60px;height:60px;" id="smallImage" src="" />
     <img style="display:none;width:200px;height:200px;" id="largeImage" src="" />
-
-
-    <style type="text/css">
-      html { height: 100% }
-      body { height: 100%; margin: 0; padding: 0 }
-      #map-canvas { height: 100% }
-    </style>
-    <script type="text/javascript"
-      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDyOYFZ32b0-VzT0fiIh9F_g6_P6Pf-JKo&sensor=true">
-    </script>
-    <script type="text/javascript">
-      function initialize() {
-        var mapOptions = {
-          center: new google.maps.LatLng(-34.397, 150.644),
-          zoom: 8
-        };
-        var map = new google.maps.Map(document.getElementById("map-canvas"),
-            mapOptions);
-      }
-      google.maps.event.addDomListener(window, 'load', initialize);
-    </script>
-
-    <div id="map-canvas"/>

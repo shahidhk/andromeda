@@ -1,0 +1,130 @@
+<div ng-controller="MapCtrl">
+  <input id="text" style="height: 60px;"/>
+  <button onclick="clearMarkers()" class="button">Clear all</button>
+  <button onclick="createLine()" class="button">Create line with markers</button>
+  <button onclick="calcRoute()" class="button">Create line with Direction API</button>
+  <button onclick="currentPoints()" class="button">No.of points in dirn set</button>
+
+  <div id="map-canvas"/>
+  <div id="directions_panel1"></div>
+  <style type="text/css">
+      html { height: 100% }
+      body { height: 100%; margin: 0; padding: 0 }
+      #map-canvas { height: 100% }
+  </style>
+  <script type="text/javascript"
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDyOYFZ32b0-VzT0fiIh9F_g6_P6Pf-JKo&sensor=false&region=IN">
+  </script>
+  <script type="text/javascript">
+    var map, marker;
+    var markers=[]
+    var latLngArray = []
+    var lineArray = []
+    var directionsDisplay;
+    var directionsService = new google.maps.DirectionsService();
+    function detectBrowser() {
+      var useragent = navigator.userAgent;
+      var mapdiv = document.getElementById("map-canvas");
+      if (useragent.indexOf('iPhone') != -1 || useragent.indexOf('Android') != -1 ) {
+        mapdiv.style.width = '100%';
+        mapdiv.style.height = '100%';
+      } else {
+        mapdiv.style.width = '100%';
+        mapdiv.style.height = '800px';
+      }
+    }
+    function initialize() {
+      var mapOptions = {
+        center: new google.maps.LatLng(13.0339542,80.2069541),
+        zoom: 15
+      };
+      directionsDisplay = new google.maps.DirectionsRenderer({draggable:true});
+      map = new google.maps.Map(document.getElementById("map-canvas"),
+          mapOptions);
+      directionsDisplay.setMap(map);
+      google.maps.event.addListener(map, 'click', function(event) {
+        placeMarker(event.latLng);
+      });
+    }
+
+    function placeMarker (latLng){
+      latLngArray.push(new google.maps.LatLng(latLng.k, latLng.A))
+      var marker = new google.maps.Marker({
+        position: latLng,
+        map: map,
+        title: '<p>Here ! <br/>'+latLng+"</p>",
+        animation: google.maps.Animation.DROP,
+        draggable: true
+      });
+      markers.push(marker);
+      var infowindow = new google.maps.InfoWindow({
+        content: marker.title
+      });
+      google.maps.event.addListener(marker, 'click', function() {
+        infowindow.open(map,marker);
+      });
+    }
+
+    function clearMarkers(){
+      for (m in markers){
+        markers[m].setMap(null)
+      }
+      for (l in lineArray){
+        lineArray[l].setMap(null)
+      }
+      markers = []
+      latLngArray = []
+    }
+
+    // Line by simple poly line
+    function createLine(){
+      var flightPath = new google.maps.Polyline({
+        path: latLngArray,
+        geodesic: true,
+        strokeColor: '#FF0000',
+        strokeOpacity: 1.0,
+        strokeWeight: 2
+      });
+      flightPath.setMap(map);
+      lineArray.push(flightPath)
+    }
+    
+    // Line from Directions API
+    function calcRoute() {
+      var start = latLngArray[0];
+      var end = latLngArray[latLngArray.length-1];
+      var waypts = [];
+      for (p in latLngArray) {
+          waypts.push({
+              location:latLngArray[p],
+              stopover:true
+          });
+      }
+
+      var request = {
+          origin: start,
+          destination: end,
+          waypoints: waypts,
+          optimizeWaypoints: true,
+          travelMode: google.maps.TravelMode.WALKING
+      };
+      directionsService.route(request, function(response, status) {
+        if (status == google.maps.DirectionsStatus.OK) {
+          directionsDisplay.setDirections(response);
+        }
+      });
+    }
+
+    function currentPoints(){
+      alert("points length: "+google.maps.geometry.encoding.decodePath(directionsDisplay.directions.routes[0].overview_polyline.points).length)
+    }
+
+    detectBrowser();
+    google.maps.event.addDomListener(window, 'load', initialize);
+    
+
+
+
+    
+  </script>
+</div>
