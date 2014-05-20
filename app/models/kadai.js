@@ -14,7 +14,7 @@ module.factory('KadaiRestangular', function(Restangular) {
 
   return Restangular.withConfig(function(RestangularConfigurer) {
 
-    RestangularConfigurer.setBaseUrl('http://192.168.2.6:1234/api');
+    RestangularConfigurer.setBaseUrl('http://192.168.2.14:1234/api');
     // RestangularConfigurer.setRequestSuffix('.json');
     RestangularConfigurer.setRestangularFields({
       id: "pk"

@@ -1,28 +1,3 @@
-<div ng-controller="UploadCtrl">
-
-  <div class="list list-inset">
-  <label class="item item-input">
-    <input type="text" value="" name="name" id="name" placeholder="Name the Kadai!">
-  </label>
-  <label class="item item-input">
-    <input type="text" value="" name="description" id="description" placeholder="Description">
-  </label>
-
-  <button class="button button-block button-positive" onclick="onDeviceReady()">
-  Select picture from device
-</button>
-<button class="button button-block button-calm" onclick="onCamReady()">
-  Take a new picture
-</button>
-
-<img id="picture" src="" style="display:none;height:50%;width:50%;" />
-<div id="picContainer"></div>
-<button class="button button-block button-balanced" onclick="uploadPhoto()">
-  Upload
-</button>
-</div>
-
-<script type="text/javascript">
 var photo;
 
 var ready = function ready() {
@@ -31,7 +6,7 @@ var ready = function ready() {
 
 document.addEventListener("deviceready", ready, false);
 
-var onDeviceReady = function onDeviceReady() {
+function onDeviceReady() {
     // Retrieve image file location from specified source
     navigator.camera.getPicture(
         storePhotoFile,
@@ -43,7 +18,7 @@ var onDeviceReady = function onDeviceReady() {
         }
     );
 }
-var onCamReady = function onCamReady() {
+function onCamReady() {
     // Retrieve image file location from specified source
     navigator.camera.getPicture(
             storePhotoCam,
@@ -55,7 +30,7 @@ var onCamReady = function onCamReady() {
             }
     );
 }
-var storePhotoFile = function storePhotoFile(imageURI){
+function storePhotoFile(imageURI){
     photo = imageURI;
     var img = document.getElementById('picture');
     img.style.display ='block';
@@ -66,18 +41,15 @@ var storePhotoCam = function storePhotoCam(imageURI){
     photo = imageURI;
     alert(imageURI);
 
+    window.resolveLocalFileSystemURI(
+        imageURI,
+        gotFileObject,
+        function(error){ alert(JSON.stringify(error)) }
+    )
+
     var gotFileObject = function gotFileObject(file){
         alert(JSON.stringify(file));
         
-        var fileMoved = function fileMoved(file){
-            var imageSrc = "/" + file.name + "?" + ((new Date()).getTime());
-            alert(imageSrc);
-            var img = document.getElementById('picture');
-            img.style.display ='block';
-            img.src = imageSrc;
-            photo = 'file://' + steroids.app.absoluteUserFilesPath + imageSrc;
-        }
-
         steroids.on('ready', function() {
             var targetDirURI = "file://" + steroids.app.absoluteUserFilesPath
             alert(targetDirURI);
@@ -90,21 +62,39 @@ var storePhotoCam = function storePhotoCam(imageURI){
                         directory,
                         fileName,
                         fileMoved,
-                        function(error){ alert(JSON.stringify(error)) }
+                        function(error){
+                            alert(JSON.stringify(error))
+                        }
                     )
                 },
                 function(error){ alert(JSON.stringify(error)) }
             );
         });
 
-        
+        var fileMoved = function fileMoved(file){
+            var imageSrc = "/" + file.name + "?" + ((new Date()).getTime());
+            alert(imageSrc);
+            var img = document.getElementById('picture');
+            img.style.display ='block';
+            img.src = imageSrc;
+        }
     }
+}
 
-    window.resolveLocalFileSystemURI(
-        imageURI,
-        gotFileObject,
-        function(error){ alert(JSON.stringify(error)) }
-    )
+var uploadPhoto = function uploadPhoto() {
+    var options = new FileUploadOptions();
+    options.fileKey="image";
+    options.fileName=photo.substr(photo.lastIndexOf('/')+1);
+    options.mimeType="image/jpeg";
+
+    var params = {};
+    params.name = document.getElementById('name').value;
+    params.description = document.getElementById('description').value;
+
+    options.params = params;
+
+    var ft = new FileTransfer();
+    ft.upload(photo, encodeURI("http://192.168.2.14:1234/api/kadai/"), win, fail, options);
 }
 
 var win = function win(r) {
@@ -121,26 +111,3 @@ var fail = function fail(error) {
     console.log("upload error source " + error.source);
     console.log("upload error target " + error.target);
 }
-
-var uploadPhoto = function uploadPhoto() {
-    alert(photo);
-    var options = new FileUploadOptions();
-    options.fileKey="image";
-    options.fileName=photo.substr(photo.lastIndexOf('/')+1);
-    options.mimeType="image/jpeg";
-    options.headers = {
-        Connection: "close"
-    };
-    options.chunkedMode = false;
-
-    var params = {};
-    params.name = document.getElementById('name').value;
-    params.description = document.getElementById('description').value;
-
-    options.params = params;
-
-    var ft = new FileTransfer();
-    ft.upload(photo, encodeURI("http://192.168.2.14:1234/api/kadai/"), win, fail, options);
-}
-
-</script>

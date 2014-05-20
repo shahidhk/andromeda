@@ -1,12 +1,13 @@
     <div ng-controller="ShowCtrl">
         <div class="list card">
             <div class="item item-avatar">
-                <img src="{{ kadai.fields.image }}">
+                <img ng-src="http://192.168.2.14:1234/media/{{ kadai.fields.image }}">
                 <h2>{{ kadai.fields.name }}</h2>
+                {{kadai.fields.image}}
                 <p>November 05, 1955</p>
             </div>
         <div class="item item-body">
-            <img class="full-image" src="delorean.jpg">
+            <img class="full-image" src="http://192.168.2.14:1234/media/{{ kadai.fields.image }}">
             <p>
                 {{ kadai.fields.description}}
             </p>

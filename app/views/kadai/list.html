@@ -5,9 +5,10 @@
            ng-click="open(kadai.pk)"
            class="item item-thumbnail-left">
 
-          <img ng-src="{{ kadai.fields.image }}">
+          <img ng-src="http://192.168.2.14:1234/media/{{ kadai.fields.image }}">
           <h2>{{ kadai.fields.name }}</h2>
           <p>{{ kadai.fields.description }}</p>
+          <p>{{kadai.fields.image}}</p>
         </div>
 
       </div>
