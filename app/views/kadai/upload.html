@@ -64,14 +64,11 @@ var storePhotoFile = function storePhotoFile(imageURI){
 
 var storePhotoCam = function storePhotoCam(imageURI){
     photo = imageURI;
-    alert(imageURI);
 
     var gotFileObject = function gotFileObject(file){
-        alert(JSON.stringify(file));
         
         var fileMoved = function fileMoved(file){
             var imageSrc = "/" + file.name + "?" + ((new Date()).getTime());
-            alert(imageSrc);
             var img = document.getElementById('picture');
             img.style.display ='block';
             img.src = imageSrc;
@@ -80,7 +77,6 @@ var storePhotoCam = function storePhotoCam(imageURI){
 
         steroids.on('ready', function() {
             var targetDirURI = "file://" + steroids.app.absoluteUserFilesPath
-            alert(targetDirURI);
             var fileName = "user_pic.jpg"
             
             window.resolveLocalFileSystemURI(
