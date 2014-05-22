@@ -1,0 +1,159 @@
+<html>
+<head>
+  <title>imglyKit</title>
+
+  <link rel="stylesheet" href="/components/imglykit/imgly.css" type="text/css" media="screen" />
+
+  <script src="/components/imglykit/imgly.concat.js"></script>
+  <script type="text/javascript" src="/components/imglykit/jquery.mobile.custom.min.js"></script>
+  <script>
+    /**
+     * imglyKit
+     * integration example
+     *
+     * Copyright (c) 2013 img.ly
+     */
+
+    $(function () {
+      var renderButton = $("#renderButton")
+        , imgly = new imglyKit({
+            container: "#container"
+          });
+      // As soon as the user selects a file...
+
+        var imagePath=localStorage.getItem("imagePath");
+        var image = new Image();
+        image.src = imagePath
+
+
+        // Find the selected file
+        
+        console.log(image)
+        try {
+          imgly.run(image);
+          console.log('ran')
+        } catch (e) {
+          if(e.name == "NoSupportError") {
+            alert("Your browser does not support canvas.");
+          } else if(e.name == "InvalidError") {
+            alert("The given file is not an image");
+          }
+        }
+        console.log('finished')
+      // As soon as the user clicks the render button...
+      // Listen for "Render final image" click
+      renderButton.click(function (event) {
+        var dataUrl;
+
+        // dataUrl = imgly.renderToDataURL("png", function (err, dataUrl) {});
+        // `dataUrl` now contains the full-sized rendered image
+        // Caution: This string will probably exceed the maximum
+        // dataURL size of 2M. You will not be able to set location.href
+        // or an <img> tag's `src` attribute to this dataUrl.
+
+        // dataUrl = imgly.renderToDataURL("png", { maxSize: "100x100" }, function (err, dataUrl) {});
+        // `dataUrl` now contains a resized rendered image that
+        // does not exceed 100x100 while keeping the ratio
+
+        // dataUrl = imgly.renderToDataURL("png", { size: "100x100" }, function (err, dataUrl) {});
+        // `dataUrl` now contains a resized rendered image with
+        // a size of 100x100 pixels while _not_ keeping the ratio
+
+        imgly.renderToDataURL("png", { size: "300x" }, function (err, dataUrl) {
+          // `dataUrl` now contains a resized rendered image with
+          // a width of 300 pixels while keeping the ratio
+
+          $("<img>").attr({
+            src: dataUrl
+          }).appendTo($("body"));
+        });
+      });
+    });
+
+  </script>
+  <script type="text/javascript">
+  (function() {
+    
+    /* == GLOBAL DECLERATIONS == */
+    TouchMouseEvent = {
+        DOWN: "touchmousedown",
+        UP: "touchmouseup",
+        MOVE: "touchmousemove"
+    }
+   
+    /* == EVENT LISTENERS == */
+    var onMouseEvent = function(event) {
+        var type;
+        
+        switch (event.type) {
+            case "mousedown": type = TouchMouseEvent.DOWN; break;
+            case "mouseup":   type = TouchMouseEvent.UP;   break;
+            case "mousemove": type = TouchMouseEvent.MOVE; break;
+            default: 
+                return;
+        }
+        
+        var touchMouseEvent = normalizeEvent(type, event, event.pageX, event.pageY);      
+        $(event.target).trigger(touchMouseEvent); 
+    }
+    
+    var onTouchEvent = function(event) {
+        var type;
+        
+        switch (event.type) {
+            case "touchstart": type = TouchMouseEvent.DOWN; break;
+            case "touchend":   type = TouchMouseEvent.UP;   break;
+            case "touchmove":  type = TouchMouseEvent.MOVE; break;
+            default: 
+                return;
+        }
+        
+        var touch = event.originalEvent.touches[0];
+        var touchMouseEvent;
+        
+        if (type == TouchMouseEvent.UP) 
+            touchMouseEvent = normalizeEvent(type, event, null, null);
+        else 
+            touchMouseEvent = normalizeEvent(type, event, touch.pageX, touch.pageY);
+        
+        $(event.target).trigger(touchMouseEvent); 
+    }
+    
+    /* == NORMALIZE == */
+    var normalizeEvent = function(type, original, x, y) {
+        return $.Event(type, {
+            pageX: x,
+            pageY: y,
+            originalEvent: original
+        });
+    }
+    
+    /* == LISTEN TO ORIGINAL EVENT == */
+    var jQueryDocument = $(document);
+   alert('i got called');
+    if ("ontouchstart" in window) {
+        jQueryDocument.on("touchstart", onTouchEvent);
+        jQueryDocument.on("touchmove", onTouchEvent);
+        jQueryDocument.on("touchend", onTouchEvent); 
+    } else {
+        jQueryDocument.on("mousedown", onMouseEvent);
+        jQueryDocument.on("mouseup", onMouseEvent);
+        jQueryDocument.on("mousemove", onMouseEvent);
+    }
+    
+})();
+  </script>
+  <style>
+    #container {
+      width: 100%;
+      height: 100%;
+    }
+  </style>
+</head>
+<body>
+  <form>
+    <div id="container"></div>
+    <input id="renderButton" type="button" value="Render final image" />
+  </form>
+</body>
+</html>

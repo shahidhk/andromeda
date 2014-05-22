@@ -14,19 +14,18 @@
 <button class="button button-block button-calm" onclick="onCamReady()">
   Take a new picture
 </button>
-
-<img id="picture" src="" style="display:none;height:50%;width:50%;" />
-<div id="picContainer"></div>
-<button class="button button-block button-balanced" onclick="uploadPhoto()">
+<button id="upload-button" class="button button-block button-balanced" onclick="uploadPhoto()">
   Upload
 </button>
+<img id="picture" src="" style="display:none;height:100%;width:100%;" />
+<button id="edit-pic" class="button button-block button-assertive" style="display: none;" onclick="editPhoto(document.getElementById('picture'))">Edit the pic</button>
 </div>
 
 <script type="text/javascript">
 var photo;
 
 var ready = function ready() {
-    alert("Ready");
+    alert("Cordova is ready");
 }
 
 document.addEventListener("deviceready", ready, false);
@@ -49,9 +48,11 @@ var onCamReady = function onCamReady() {
             storePhotoCam,
             function(message) { alert('get picture failed'); },
             {
-                    quality         : 10,
+                    quality         : 50,
                     destinationType : navigator.camera.DestinationType.FILE_URI,
-                    sourceType      : navigator.camera.PictureSourceType.CAMERA
+                    sourceType      : navigator.camera.PictureSourceType.CAMERA,
+                    correctOrientation : true,
+                    allowEdit : true
             }
     );
 }
@@ -73,6 +74,7 @@ var storePhotoCam = function storePhotoCam(imageURI){
             img.style.display ='block';
             img.src = imageSrc;
             photo = 'file://' + steroids.app.absoluteUserFilesPath + imageSrc;
+            document.getElementById('edit-pic').style.display = 'block'
         }
 
         steroids.on('ready', function() {
@@ -119,7 +121,8 @@ var fail = function fail(error) {
 }
 
 var uploadPhoto = function uploadPhoto() {
-    alert(photo);
+    document.getElementById('upload-button').innerHTML = 'Uploading... Please wait...'
+    document.getElementById('upload-button').className = document.getElementById('upload-button').className.replace('button-balanced','button-energized')
     var options = new FileUploadOptions();
     options.fileKey="image";
     options.fileName=photo.substr(photo.lastIndexOf('/')+1);
@@ -138,5 +141,15 @@ var uploadPhoto = function uploadPhoto() {
     var ft = new FileTransfer();
     ft.upload(photo, encodeURI("http://192.168.2.14:1234/api/kadai/"), win, fail, options);
 }
+
+//**********************************//
+function editPhoto(img){
+    var imageSrc = img.src
+    localStorage.setItem('imagePath', imageSrc)
+    var webView = new steroids.views.WebView("/views/kadai/edit_pic.html");
+    steroids.modal.show(webView);
+
+}
+
 
 </script>
