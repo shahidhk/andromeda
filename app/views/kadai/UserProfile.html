@@ -1,0 +1,36 @@
+<div ng-controller="UserProfileCtrl" id="UserProfile">
+
+<div id="title0" ng-click="title0Tap()">
+<h1>User profile</h1>
+
+</div>
+
+<div id="button1" ng-click="button1Tap()">
+<button type="button" class="btn btn-primary btn-lg btn-block">
+  Sign In/Out/Up
+</button>
+
+</div>
+
+<div id="button2" ng-click="button2Tap()">
+<button type="button" class="btn btn-primary btn-lg btn-block">
+  Activity log
+</button>
+
+</div>
+
+<div id="button3" ng-click="button3Tap()">
+<button type="button" class="btn btn-primary btn-lg btn-block">
+  Favourites
+</button>
+
+</div>
+
+</div>
+
+<script type="text/javascript">
+var element = document.getElementById('UserProfile');
+    var hammertime = Hammer(element).on("swiperight", function(event) {
+        steroids.layers.pop()
+    });
+</script>

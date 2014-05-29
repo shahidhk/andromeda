@@ -7,6 +7,7 @@ if ( typeof angular == 'undefined' ) {
 	return;
 };
 
+var baseUrl = 'http://192.168.2.10:1234'
 
 var module = angular.module('KadaiModel', ['restangular']);
 
@@ -14,7 +15,7 @@ module.factory('KadaiRestangular', function(Restangular) {
 
   return Restangular.withConfig(function(RestangularConfigurer) {
 
-    RestangularConfigurer.setBaseUrl('http://192.168.2.14:1234/api');
+    RestangularConfigurer.setBaseUrl(baseUrl + '/api');
     // RestangularConfigurer.setRequestSuffix('.json');
     RestangularConfigurer.setRestangularFields({
       id: "pk"

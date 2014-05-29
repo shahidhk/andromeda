@@ -1,13 +1,54 @@
+<script>
+    var cacheImage = function() {
+      $('img[data-src]').each(function() {
+        $img = $(this);
+        // see console output for debug info
+        ImgCache.options.debug = true;
+        ImgCache.options.usePersistentCache = true;
+  
+        ImgCache.init(function() {
+          // 1. cache images
+          // for (var i = 0; i < $proper.length; i++) {
+          //   ImgCache.cacheFile($($proper[i]).attr('src'));
+          // }
+          // // 2. broken images get replaced
+          // for (var i = 0; i < $broken.length; i++) {
+          //   ImgCache.useCachedFile($($broken[i]));
+          // }
+          ImgCache.isCached($img.attr('data-src'), function(path, success){
+            if (success){
+                ImgCache.useCachedFile($img)
+            } else {
+              ImgCache.cacheFile($img.attr('data-src'), function(){
+                ImgCache.useCachedFile($img)
+              })
+            }
+          })
+
+        });
+      });
+
+    };
+
+    if (typeof(cordova) !== 'undefined') {
+      // cordova test
+      document.addEventListener('deviceready', cacheImage, false);
+    } else {
+      // normal browser test
+      $(document).ready(cacheImage);
+    }
+</script>
+
     <div ng-controller="ShowCtrl">
         <div class="list card">
             <div class="item item-avatar">
-                <img ng-src="http://192.168.2.14:1234/media/{{ kadai.fields.image }}">
+                <img src="" data-src="{{ baseUrl }}/media/{{ kadai.fields.image }}">
                 <h2>{{ kadai.fields.name }}</h2>
                 {{kadai.fields.image}}
                 <p>November 05, 1955</p>
             </div>
         <div class="item item-body">
-            <img class="full-image" src="http://192.168.2.14:1234/media/{{ kadai.fields.image }}">
+            <img class="full-image" src="" data-src="{{ baseUrl }}/media/{{ kadai.fields.image }}">
             <p>
                 {{ kadai.fields.description}}
             </p>

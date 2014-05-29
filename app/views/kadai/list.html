@@ -1,11 +1,79 @@
+<script>
+    var cacheImage = function() {
+      console.log('funct called')
+
+        ImgCache.options.debug = true;
+        ImgCache.options.usePersistentCache = true;
+        
+        ImgCache.init(function(){alert('ImgCache init: success!');
+
+      var i=0;
+
+      console.log('before func')
+      $('img').each(function() {
+        console.log('count '+i);
+        $img = $(this);
+        ImgCache.isCached($img.attr('data-src'), function(path, success) {
+          if (success){
+            console.log('success');
+            console.log($($img));
+            console.log($img);
+
+            ImgCache.useCachedFile($($img));
+          } else {
+            ImgCache.cacheFile($img.attr('data-src'), function() {
+              console.log('fail');
+              console.log($($img));
+              console.log($img);
+              ImgCache.useCachedFile($($img));
+            });
+          }
+        });
+        i++;
+      });
+      console.log('after func')
+
+      }, function(){alert('ImgCache init: error! Check the log for errors');});
+      
+      
+
+    };
+
+
+    if (typeof(cordova) !== 'undefined') {
+      // cordova test
+      document.addEventListener('deviceready', cacheImage, false);
+    } else {
+      // normal browser test
+      $(document).ready(cacheImage);
+    }
+
+function messageReceived(event) {
+      document.getElementById('fetch_data').click();
+  
+  // check that the message is intended for us
+  if (event.data.recipient == "listView") {
+    if (event.data.message == "load"){
+      document.getElementById('fetch_data').click();
+    }
+  }
+}
+
+window.addEventListener("message", messageReceived);
+</script>
+
   <div ng-controller="ListCtrl">
+    <div id="loading_div">Loading spinner</div>
+
+    <a href="#" id="fetch_data" ng-click="fetch()">fetch</a>
+
     <div class="list">
 
         <div ng-repeat="kadai in kadais" 
            ng-click="open(kadai.pk)"
            class="item item-thumbnail-left">
 
-          <img ng-src="http://192.168.2.14:1234/media/{{ kadai.fields.image }}">
+          <img src="" data-src="{{ baseUrl }}/media/{{ kadai.fields.image }}">
           <h2>{{ kadai.fields.name }}</h2>
           <p>{{ kadai.fields.description }}</p>
           <p>{{kadai.fields.image}}</p>
